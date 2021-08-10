@@ -62,3 +62,42 @@ var firstMissingPositive = function (nums) {
  * 再遍历数组，取第i位数的绝对值，如果绝对值|nums[i]|大于等于1小于等于n则将nums[|nums[i]|-1]的值变成负数记录下来
  * 最后遍历数组，找到第i位数大于0，则结果位i+1;否则结果位n+1;
  * /
+
+var swapX = function (x, nums, i) {
+  if (x !== i + 1 && x > 0 && x <= nums.length && x !== nums[x - 1]) {
+    var y = nums[x - 1];
+    nums[x - 1] = x;
+    nums[i] = y;
+    swapX(y, nums, i);
+  }
+};
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive = function (nums) {
+  for (var i = 0; i < nums.length; i++) {
+    var x = nums[i];
+    if (x !== i + 1) {
+      swapX(x, nums, i);
+    }
+  }
+
+  for (var i = 0; i < nums.length; i++) {
+    if (nums[i] !== i + 1) {
+      return i + 1;
+    }
+  }
+  return nums.length + 1;
+};
+
+
+/**
+ * 假设数组长度为n
+ * 
+ * 首先看结果应该在1到n+1之间
+ * 那么便利数组，下标为i，将值为i+1的数组元素与nums[i]交换位置
+ * 最后遍历数组，取第一个下标i，对应的值不为i+1，则结果为i+1
+ * 
+ */
